@@ -8,7 +8,7 @@ import ReservasRoutes from './routes/reservas.routes.js'
 import EventosRoutes from './routes/eventos.routes.js'
 import ClientesRoutes from './routes/clientes.routes.js'
 import AlquileresRoutes from './routes/alquileres.routes.js'
-import InventarioRoutes from './routes/eventos.routes.js'
+import InventarioRoutes from './routes/inventario.routes.js'
 
 //import { authenticateToken } from "./auth/auth.middleware.js"
 
