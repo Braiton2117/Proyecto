@@ -3,7 +3,7 @@ import { conmysql } from "../db.js";
 export const getAlquileres =
 async (req, res) => {
     try {
-        const [alquileres] = await conmysql.query("SELECT * FROM alquileres");
+        const [alquileres] = await conmysql.query("SELECT * FROM Alquileres");
         res.json(alquileres);
     } catch (error) {
         console.error("Error al obtener alquileres:", error);
@@ -14,7 +14,7 @@ async (req, res) => {
 export const getAlquilerxid =
 async (req, res) => {
     try {
-        const [result] = await conmysql.query("SELECT * FROM alquileres WHERE id_alquiler = ?", [req.params.id]);
+        const [result] = await conmysql.query("SELECT * FROM Alquileres WHERE id_alquiler = ?", [req.params.id]);
         if (result.length <= 0) return res.status(404).json({ 
             id_alquiler:0,
             message: "Alquiler no encontrado" });
@@ -31,7 +31,7 @@ async (req, res) => {
         const { id_reserva, id_cliente, id_item, cantidad, precio_total } = req.body;
 
         const [result] = await conmysql.query(
-            "INSERT INTO alquileres (id_reserva, id_cliente, id_item, cantidad, precio_total) VALUES (?, ?, ?, ?, ?)",
+            "INSERT INTO Alquileres (id_reserva, id_cliente, id_item, cantidad, precio_total) VALUES (?, ?, ?, ?, ?)",
             [id_reserva, id_cliente, id_item, cantidad, precio_total]
         );
 
@@ -52,13 +52,13 @@ async (req, res) => {
         const { id_reserva, id_cliente, id_item, cantidad, precio_total } = req.body;
 
         const [result] = await conmysql.query(
-            "UPDATE alquileres SET id_reserva = ?, id_cliente = ?, id_item = ?, cantidad = ?, precio_total = ? WHERE id_alquiler = ?",
+            "UPDATE Alquileres SET id_reserva = ?, id_cliente = ?, id_item = ?, cantidad = ?, precio_total = ? WHERE id_alquiler = ?",
             [id_reserva, id_cliente, id_item, cantidad, precio_total, id]
         );
 
         if (result.affectedRows <= 0) return res.status(404).json({ message: "Alquiler no encontrado" });
 
-        const [updatedAlquiler] = await conmysql.query("SELECT * FROM alquileres WHERE id_alquiler = ?", [id]);
+        const [updatedAlquiler] = await conmysql.query("SELECT * FROM Alquileres WHERE id_alquiler = ?", [id]);
         res.json(updatedAlquiler[0]);
     } catch (error) {
         console.error("Error al actualizar alquiler:", error);
@@ -72,13 +72,13 @@ export const patchAlquiler = async (req, res) => {
         const { id_reserva, id_cliente, id_item, cantidad, precio_total } = req.body;
 
         const [result] = await conmysql.query(
-            "UPDATE alquileres SET id_reserva = IFNULL(?, id_reserva), id_cliente = IFNULL(?, id_cliente), id_item = IFNULL(?, id_item), cantidad = IFNULL(?, cantidad), precio_total = IFNULL(?, precio_total) WHERE id_alquiler = ?",
+            "UPDATE Alquileres SET id_reserva = IFNULL(?, id_reserva), id_cliente = IFNULL(?, id_cliente), id_item = IFNULL(?, id_item), cantidad = IFNULL(?, cantidad), precio_total = IFNULL(?, precio_total) WHERE id_alquiler = ?",
             [id_reserva, id_cliente, id_item, cantidad, precio_total, id]
         );
 
         if (result.affectedRows <= 0) return res.status(404).json({ message: "Alquiler no encontrado" });
 
-        const [updatedAlquiler] = await conmysql.query("SELECT * FROM alquileres WHERE id_alquiler = ?", [id]);
+        const [updatedAlquiler] = await conmysql.query("SELECT * FROM Alquileres WHERE id_alquiler = ?", [id]);
         res.json(updatedAlquiler[0]);
     } catch (error) {
         console.error("Error al actualizar parcialmente el alquiler:", error);
@@ -88,7 +88,7 @@ export const patchAlquiler = async (req, res) => {
 
 export const deleteAlquiler = async (req, res) => {
     try {
-        const [result] = await conmysql.query("DELETE FROM alquileres WHERE id_alquiler = ?", [req.params.id]);
+        const [result] = await conmysql.query("DELETE FROM Alquileres WHERE id_alquiler = ?", [req.params.id]);
 
         if (result.affectedRows <= 0) return res.status(404).json({ message: "Alquiler no encontrado" });
 
