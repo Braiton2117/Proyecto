@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {getInventarios, getInventarioxid, postInventario, putInventario, patchInventario, deleteInventario, getInventarios } from '../controladores/inventarioCtrl.js'
+import {getInventarios, getInventarioxid, postInventario, putInventario, patchInventario, deleteInventario} from '../controladores/inventarioCtrl.js'
 const router=Router()
 //armar nuestras rutas
 
