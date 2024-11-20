@@ -4,7 +4,7 @@ import { conmysql } from "../db.js";
 export const getUsuarios =
 async (req, res) => {
     try {
-        const [result] = await conmysql.query("SELECT * FROM usuarios");
+        const [result] = await conmysql.query("SELECT * FROM Usuarios");
         res.json(result);
     } catch (error) {
         console.error("Error al obtener usuarios:", error);
@@ -15,7 +15,7 @@ async (req, res) => {
 // buscamos un usuario por id
 export const getUsuarioxid = async (req, res) => {
     try {
-        const [result] = await conmysql.query("SELECT * FROM usuarios WHERE id_usuario = ?", [req.params.id]);
+        const [result] = await conmysql.query("SELECT * FROM Usuarios WHERE id_usuario = ?", [req.params.id]);
         if (result.length<=0)return res.status(404).json({
             id_usuario:0,
             message:"Usuario no encontrado"
@@ -32,7 +32,7 @@ export const postUsuario = async (req, res) => {
     try {
         const { nombre, email, telefono, password } = req.body;
         const [result] = await conmysql.query(
-            "INSERT INTO usuarios (nombre, email, telefono, password, fecha_registro) VALUES (?, ?, ?, ?)",
+            "INSERT INTO Usuarios (nombre, email, telefono, password, fecha_registro) VALUES (?, ?, ?, ?)",
             [nombre, email, telefono, password]
         );
         res.status(201).json({
@@ -50,13 +50,13 @@ export const putUsuario = async (req, res) => {
         const {id} = req.params;
         const { nombre, email, telefono, password } = req.body;
         const [result] = await conmysql.query(
-            "UPDATE usuarios SET nombre = ?, email = ?, telefono = ?, password = ? WHERE id_usuario = ?",
+            "UPDATE Usuarios SET nombre = ?, email = ?, telefono = ?, password = ? WHERE id_usuario = ?",
             [nombre, email, telefono, password, id]
         )
         if(result.affectedRows<=0)return res.status(404).json({
             message:'Usuario no encontrado'
         })
-        const[rows]=await conmysql.query('select * from usuarios where id_usuario=?',[id])
+        const[rows]=await conmysql.query('select * from Usuarios where id_usuario=?',[id])
         res.json(rows[0])
     } catch (error) {
         console.error("Error al actualizar usuario:", error);
@@ -71,7 +71,7 @@ export const patchUsuario =
         const {id} = req.params;
         const { nombre, email, telefono, password } = req.body;
         const [result] = await conmysql.query(
-            "UPDATE usuarios SET nombre = IFNULL(?, nombre), email = IFNULL(?, email), telefono = IFNULL(?, telefono), password = IFNULL(?, password) WHERE id_usuario = ?",
+            "UPDATE Usuarios SET nombre = IFNULL(?, nombre), email = IFNULL(?, email), telefono = IFNULL(?, telefono), password = IFNULL(?, password) WHERE id_usuario = ?",
             [nombre, email, telefono, password, id]
         );
         if (result.affectedRows === 0) {
@@ -89,7 +89,7 @@ export const patchUsuario =
     async(req,res)=>{
         try {
             //const {miid}=req.params
-            const [rows]=await conmysql.query(' delete from usuarios where id_usuario=?',[req.params.id])
+            const [rows]=await conmysql.query(' delete from Usuarios where id_usuario=?',[req.params.id])
             if(rows.affectedRows<=0)return res.status(404).json({
                 id:0,
                 message: "No pudo eliminar el usuario"
