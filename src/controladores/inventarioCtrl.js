@@ -4,7 +4,7 @@ import { conmysql } from "../db.js";
 export const getInventarios= 
 async (req, res) => {
   try {
-    const [result] = await conmysql.query("SELECT * FROM inventarios");
+    const [result] = await conmysql.query("SELECT * FROM Inventario");
     res.json(result);
   } catch (error) {
     console.error("Error al obtener inventarios:", error);
@@ -16,7 +16,7 @@ async (req, res) => {
 export const getInventarioxid= 
 async (req, res) => {
   try {
-    const [result] = await conmysql.query("SELECT * FROM inventarios WHERE id_item = ?", [req.params.id]);
+    const [result] = await conmysql.query("SELECT * FROM Inventario WHERE id_item = ?", [req.params.id]);
     if (result.length <= 0)
       return res.status(404).json({
         id_item:0,
@@ -37,7 +37,7 @@ async (req, res) => {
     }
 
     const [rows] = await conmysql.query(
-      "INSERT INTO salas (nombre_item, tipo, cantidad_disponible, precio, imagen) VALUES (?, ?, ?, ?)",
+      "INSERT INTO Inventario (nombre_item, tipo, cantidad_disponible, precio, imagen) VALUES (?, ?, ?, ?)",
       [nombre_item, tipo, cantidad_disponible, precio, imagen]
     );
 
@@ -66,8 +66,8 @@ async (req, res) => {
     }
 
     const query = imagen
-      ? "UPDATE inventarios SET nombre_item = ?, tipo = ?, cantidad_disponible = ?, precio = ?, imagen = ? WHERE id_item = ?"
-      : "UPDATE inventarios SET nombre_item = ?, tipo = ?, cantidad_disponible = ?, precio = ? WHERE id_item = ?";
+      ? "UPDATE Inventario SET nombre_item = ?, tipo = ?, cantidad_disponible = ?, precio = ?, imagen = ? WHERE id_item = ?"
+      : "UPDATE Inventario SET nombre_item = ?, tipo = ?, cantidad_disponible = ?, precio = ? WHERE id_item = ?";
 
     const values = imagen
       ? [nombre_item, tipo, cantidad_disponible, precio, imagen, id]
@@ -77,7 +77,7 @@ async (req, res) => {
 
     if (result.affectedRows <= 0) return res.status(404).json({ message: "Inventario no encontrada" });
 
-    const [rows] = await conmysql.query("SELECT * FROM inventarios WHERE id_item = ?", [id]);
+    const [rows] = await conmysql.query("SELECT * FROM Inventario WHERE id_item = ?", [id]);
     res.json(rows[0]);
   } catch (error) {
     console.error("Error en putInventario:", error);
@@ -94,13 +94,13 @@ async (req, res) => {
     const imagen = req.file ? `/uploads/${req.file.filename}` : null;
 
     const [result] = await conmysql.query(
-      "UPDATE inventarios SET nombre_item = IFNULL(?, nombre_item), tipo = IFNULL(?, tipo), cantidad_disponible = IFNULL(?, cantidad_disponible), imagen = IFNULL(?, imagen) WHERE id_item = ?",
+      "UPDATE Inventario SET nombre_item = IFNULL(?, nombre_item), tipo = IFNULL(?, tipo), cantidad_disponible = IFNULL(?, cantidad_disponible), imagen = IFNULL(?, imagen) WHERE id_item = ?",
       [nombre_item, tipo, cantidad_disponible, precio, imagen, id]
     );
 
     if (result.affectedRows <= 0) return res.status(404).json({ message: "Inventario no encontrada" });
 
-    const [rows] = await conmysql.query("SELECT * FROM inventarios WHERE id_item = ?", [id]);
+    const [rows] = await conmysql.query("SELECT * FROM Inventario WHERE id_item = ?", [id]);
     res.json(rows[0]);
   } catch (error) {
     console.error("Error en patchInventario:", error);
@@ -108,12 +108,12 @@ async (req, res) => {
   }
 }
 
-// Eliminar una sala
+// Eliminar una Inventario
 export const deleteInventario=
 async(req, res)=>{
     try {
         console.log("ID recibido para eliminación:", req.params.id);  //CONSOLA PUESTA
-        const [rows]=await conmysql.query('delete from inventarios where id_item=?',[req.params.id])
+        const [rows]=await conmysql.query('delete from Inventario where id_item=?',[req.params.id])
         console.log("Resultado de la consulta:", rows);   //CONSOLA PUESTA
         if (rows.affectedRows <= 0) {
             console.log("No se encontró el inventario para eliminar.");  //CONSOLA PUESTA
