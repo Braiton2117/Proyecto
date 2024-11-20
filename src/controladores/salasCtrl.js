@@ -4,7 +4,7 @@ import { conmysql } from "../db.js";
 export const getSalas= 
 async (req, res) => {
   try {
-    const [result] = await conmysql.query("SELECT * FROM salas");
+    const [result] = await conmysql.query("SELECT * FROM Salas");
     res.json(result);
   } catch (error) {
     console.error("Error al obtener salas:", error);
@@ -16,7 +16,7 @@ async (req, res) => {
 export const getSalaxid= 
 async (req, res) => {
   try {
-    const [result] = await conmysql.query("SELECT * FROM salas WHERE id_sala = ?", [req.params.id]);
+    const [result] = await conmysql.query("SELECT * FROM Salas WHERE id_sala = ?", [req.params.id]);
     if (result.length <= 0)
       return res.status(404).json({
         id_sala: 0,
@@ -38,7 +38,7 @@ async (req, res) => {
     }
 
     const [rows] = await conmysql.query(
-      "INSERT INTO salas (nombre_sala, capacidad, ubicacion, precio, imagen) VALUES (?, ?, ?, ?)",
+      "INSERT INTO Salas (nombre_sala, capacidad, ubicacion, precio, imagen) VALUES (?, ?, ?, ?)",
       [nombre_sala, capacidad, ubicacion, precio, imagen]
     );
 
@@ -67,8 +67,8 @@ async (req, res) => {
     }
 
     const query = imagen
-      ? "UPDATE salas SET nombre_sala = ?, capacidad = ?, ubicacion = ?, imagen = ? WHERE id_sala = ?"
-      : "UPDATE salas SET nombre_sala = ?, capacidad = ?, ubicacion = ? WHERE id_sala = ?";
+      ? "UPDATE Salas SET nombre_sala = ?, capacidad = ?, ubicacion = ?, imagen = ? WHERE id_sala = ?"
+      : "UPDATE Salas SET nombre_sala = ?, capacidad = ?, ubicacion = ? WHERE id_sala = ?";
 
     const values = imagen
       ? [nombre_sala, capacidad, ubicacion, precio, imagen, id]
@@ -78,7 +78,7 @@ async (req, res) => {
 
     if (result.affectedRows <= 0) return res.status(404).json({ message: "Sala no encontrada" });
 
-    const [rows] = await conmysql.query("SELECT * FROM salas WHERE id_sala = ?", [id]);
+    const [rows] = await conmysql.query("SELECT * FROM Salas WHERE id_sala = ?", [id]);
     res.json(rows[0]);
   } catch (error) {
     console.error("Error en putSala:", error);
@@ -95,13 +95,13 @@ async (req, res) => {
     const imagen = req.file ? `/uploads/${req.file.filename}` : null;
 
     const [result] = await conmysql.query(
-      "UPDATE salas SET nombre_sala = IFNULL(?, nombre_sala), capacidad = IFNULL(?, capacidad), ubicacion = IFNULL(?, ubicacion), imagen = IFNULL(?, imagen) WHERE id_sala = ?",
+      "UPDATE Salas SET nombre_sala = IFNULL(?, nombre_sala), capacidad = IFNULL(?, capacidad), ubicacion = IFNULL(?, ubicacion), imagen = IFNULL(?, imagen) WHERE id_sala = ?",
       [nombre_sala, capacidad, ubicacion, precio, imagen, id]
     );
 
     if (result.affectedRows <= 0) return res.status(404).json({ message: "Sala no encontrada" });
 
-    const [rows] = await conmysql.query("SELECT * FROM salas WHERE id_sala = ?", [id]);
+    const [rows] = await conmysql.query("SELECT * FROM Salas WHERE id_sala = ?", [id]);
     res.json(rows[0]);
   } catch (error) {
     console.error("Error en patchSala:", error);
@@ -113,7 +113,7 @@ async (req, res) => {
 export const deleteSala =
  async (req, res) => {
   try {
-    const [rows] = await conmysql.query("DELETE FROM salas WHERE id_sala = ?", [req.params.id]);
+    const [rows] = await conmysql.query("DELETE FROM Salas WHERE id_sala = ?", [req.params.id]);
     if (rows.affectedRows <= 0) return res.status(404).json({ message: "No se pudo eliminar la sala" });
     res.sendStatus(202);
   } catch (error) {
