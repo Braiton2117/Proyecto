@@ -4,7 +4,7 @@ import { conmysql } from "../db.js";
 export const getReservas= 
 async (req, res) => {
   try {
-    const [result] = await conmysql.query('SELECT * FROM reservas');
+    const [result] = await conmysql.query('SELECT * FROM Reservas');
     res.json(result);
   } catch (error) {
     res.status(500).json({ message: 'Error al obtener las reservas', error });
@@ -15,7 +15,7 @@ async (req, res) => {
 export const getReservaxid=
 async (req,res)=>{
     try {
-        const[result]=await conmysql.query('select * from usuarios where id_reserva=?',[req.params.id])
+        const[result]=await conmysql.query('select * from Reservas where id_reserva=?',[req.params.id])
         if (result.length<=0)return res.status(404).json({
             id_reserva:0,
             message:"Reserva no encontrado"
@@ -33,7 +33,7 @@ async (req, res) => {
   const { id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado } = req.body;
   try {
     const [result] = await conmysql.query(
-      'INSERT INTO reservas (id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO Reservas (id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
       [id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado]
     );
     res.status(201).json({ message: 'Reserva creada', id_reserva: result.insertId });
@@ -49,7 +49,7 @@ async (req, res) => {
   const { id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado } = req.body;
   try {
     const [result] = await conmysql.query(
-      'UPDATE reservas SET id_cliente = ?, id_usuario = ?, id_sala = ?, fecha_reserva = ?, fecha_evento = ?, duracion = ?, precio_total = ?, estado = ? WHERE id_reserva = ?',
+      'UPDATE Reservas SET id_cliente = ?, id_usuario = ?, id_sala = ?, fecha_reserva = ?, fecha_evento = ?, duracion = ?, precio_total = ?, estado = ? WHERE id_reserva = ?',
       [id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado, id]
     );
     if (result.affectedRows === 0) return res.status(404).json({ message: 'Reserva no encontrada' });
@@ -66,13 +66,13 @@ async (req,res)=>{
         //console.log(req.body)
         const {id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado}=req.body
         //console.log(cli_nombre)
-        const [result]=await conmysql.query('update reservas set id_cliente = IFNULL(?, id_cliente), id_usuario = IFNULL(?, id_usuario), id_sala = IFNULL(?, id_sala), fecha_reserva = IFNULL(?, fecha_reserva), fecha_evento = IFNULL(?, fecha_evento), duracion = IFNULL(?, duracion), precio_total = IFNULL(?, precio_total), estado = IFNULL(?, estado)  where id_reserva =?',
+        const [result]=await conmysql.query('update Reservas set id_cliente = IFNULL(?, id_cliente), id_usuario = IFNULL(?, id_usuario), id_sala = IFNULL(?, id_sala), fecha_reserva = IFNULL(?, fecha_reserva), fecha_evento = IFNULL(?, fecha_evento), duracion = IFNULL(?, duracion), precio_total = IFNULL(?, precio_total), estado = IFNULL(?, estado)  where id_reserva =?',
             [id_cliente, id_usuario, id_sala, fecha_reserva, fecha_evento, duracion, precio_total, estado, id])
 
         if(result.affectedRows<=0)return res.status(404).json({
             message:'Reserva no encontrado'
         })
-        const[rows]=await conmysql.query('select * from reservas where id_reserva=?',[id])
+        const[rows]=await conmysql.query('select * from Reservas where id_reserva=?',[id])
         res.json(rows[0])
         /* res.send({
             id:rows.insertId
@@ -87,7 +87,7 @@ export const deleteReserva =
  async (req, res) => {
   const {id} = req.params;
   try {
-    const [result] = await conmysql.query('DELETE FROM reservas WHERE id_reserva = ?', [id]);
+    const [result] = await conmysql.query('DELETE FROM Reservas WHERE id_reserva = ?', [id]);
     if (result.affectedRows === 0) return res.status(404).json({ 
         id:0,
         message: 'Reserva no encontrada' });
