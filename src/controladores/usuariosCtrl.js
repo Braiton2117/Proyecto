@@ -30,9 +30,9 @@ export const getUsuarioxid = async (req, res) => {
 // creamos un nuevo usuario
 export const postUsuario = async (req, res) => {
     try {
-        const { nombre, email, telefono, password } = req.body;
+        const { nombre, email, telefono, password, fecha_registro, usuario } = req.body;
         const [result] = await conmysql.query(
-            "INSERT INTO Usuarios (nombre, email, telefono, password, fecha_registro) VALUES (?, ?, ?, ?)",
+            "INSERT INTO Usuarios (nombre, email, telefono, password, fecha_registro, usuario) VALUES (?, ?, ?, ?, ?)",
             [nombre, email, telefono, password]
         );
         res.status(201).json({
@@ -48,9 +48,9 @@ export const postUsuario = async (req, res) => {
 export const putUsuario = async (req, res) => {
     try {
         const {id} = req.params;
-        const { nombre, email, telefono, password } = req.body;
+        const { nombre, email, telefono, password, fecha_registro, usuario } = req.body;
         const [result] = await conmysql.query(
-            "UPDATE Usuarios SET nombre = ?, email = ?, telefono = ?, password = ? WHERE id_usuario = ?",
+            "UPDATE Usuarios SET nombre = ?, email = ?, telefono = ?, password = ?, usuario = ? WHERE id_usuario = ?",
             [nombre, email, telefono, password, id]
         )
         if(result.affectedRows<=0)return res.status(404).json({
@@ -69,10 +69,10 @@ export const patchUsuario =
  async (req, res) => {
     try {
         const {id} = req.params;
-        const { nombre, email, telefono, password } = req.body;
+        const { nombre, email, telefono, password, usuario } = req.body;
         const [result] = await conmysql.query(
-            "UPDATE Usuarios SET nombre = IFNULL(?, nombre), email = IFNULL(?, email), telefono = IFNULL(?, telefono), password = IFNULL(?, password) WHERE id_usuario = ?",
-            [nombre, email, telefono, password, id]
+            "UPDATE Usuarios SET nombre = IFNULL(?, nombre), email = IFNULL(?, email), telefono = IFNULL(?, telefono), password = IFNULL(?, password), usuario = IFNULL(?, usuario) WHERE id_usuario = ?",
+            [nombre, email, telefono, password, usuario, id]
         );
         if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Usuario no encontrado" });
