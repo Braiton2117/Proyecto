@@ -30,10 +30,10 @@ export const getUsuarioxid = async (req, res) => {
 // creamos un nuevo usuario
 export const postUsuario = async (req, res) => {
     try {
-        const { nombre, email, telefono, password, fecha_registro, usuario } = req.body;
+        const { nombre, email, telefono, password, usuario } = req.body;
         const [result] = await conmysql.query(
-            "INSERT INTO Usuarios (nombre, email, telefono, password, fecha_registro, usuario) VALUES (?, ?, ?, ?, ?, ?)",
-            [nombre, email, telefono, password, fecha_registro, usuario]
+            "INSERT INTO Usuarios (nombre, email, telefono, password, usuario) VALUES (?, ?, ?, ?, ?)",
+            [nombre, email, telefono, password, usuario]
         );
         res.status(201).json({
             message: "Usuario creado correctamente",
