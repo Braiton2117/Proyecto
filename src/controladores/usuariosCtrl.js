@@ -31,13 +31,13 @@ export const getUsuarioxid = async (req, res) => {
 export const postUsuario = async (req, res) => {
     try {
         const { nombre, email, telefono, password, usuario } = req.body;
-        const [result] = await conmysql.query(
-            "INSERT INTO Usuarios (nombre, email, telefono, password, usuario) VALUES (?, ?, ?, ?, ?)",
+        const [rows] = await conmysql.query(
+            'INSERT INTO Usuarios (nombre, email, telefono, password, usuario) VALUES (?, ?, ?, ?, ?)',
             [nombre, email, telefono, password, usuario]
         );
-        res.status(201).json({
+        res.send({
             message: "Usuario creado correctamente",
-            id_usuario: result.insertId,
+            id: rows.insertId
         });
     } catch (error) {
         console.error("Error al crear usuario:", error);
