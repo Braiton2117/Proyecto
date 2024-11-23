@@ -28,7 +28,8 @@ export const getUsuarioxid = async (req, res) => {
 };
 
 // creamos un nuevo usuario
-export const postUsuario = async (req, res) => {
+export const postUsuario = 
+    async (req, res) => {
     try {
         const { nombre, email, telefono, password, usuario } = req.body;
         const [rows] = await conmysql.query(
@@ -48,10 +49,10 @@ export const postUsuario = async (req, res) => {
 export const putUsuario = async (req, res) => {
     try {
         const {id} = req.params;
-        const { nombre, email, telefono, password, fecha_registro, usuario } = req.body;
+        const { nombre, email, telefono, password, usuario } = req.body;
         const [result] = await conmysql.query(
-            "UPDATE Usuarios SET nombre = ?, email = ?, telefono = ?, password = ?, fecha_registro = ?, usuario = ? WHERE id_usuario = ?",
-            [nombre, email, telefono, password, fecha_registro, usuario, id]
+            "UPDATE Usuarios SET nombre = ?, email = ?, telefono = ?, password = ?, usuario = ? WHERE id_usuario = ?",
+            [nombre, email, telefono, password, usuario, id]
         )
         if(result.affectedRows<=0)return res.status(404).json({
             message:'Usuario no encontrado'
