@@ -32,7 +32,7 @@ export const postUsuario = async (req, res) => {
     try {
         const { nombre, email, telefono, password,fecha_registro, usuario } = req.body;
         const [rows] = await conmysql.query(
-            'INSERT INTO Usuarios (nombre, email, telefono, password, usuario) VALUES (?, ?, ?, ?, ?, ?)',
+            'INSERT INTO Usuarios (nombre, email, telefono, password, fecha_registro, usuario) VALUES (?, ?, ?, ?, ?, ?)',
             [nombre, email, telefono, password,fecha_registro, usuario]
         );
         res.send({
